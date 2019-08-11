@@ -26,27 +26,33 @@ public class RentalServiceTest {
         Customers customerList = new Customers();
 
         Customer customer1 = new Customer(1, "Swetha");
-//        Customer customer2 = new Customer(1, "Sravya");
+        Customer customer2 = new Customer(2, "Sravya");
         Cycle cycle1 = new Cycle(1, "LB", "Hero", 10.0, 4, 5.0);
-//        Cycle cycle2 = new Cycle(2, "LB", "Hero", 30.0);
-//        Cycle cycle3 = new Cycle(3, "LB", "Hero", 20.0);
+        Cycle cycle2 = new Cycle(3, "LB", "Hero", 30.0, 3, 21.0);
+        Cycle cycle3 = new Cycle(4, "LB", "Hero", 20.0, 7,32.3);
 
         cycleList.add(cycle1);
-//        cycleList.add(cycle2);
-//        cycleList.add(cycle3);
+        cycleList.add(cycle2);
+        cycleList.add(cycle3);
 
         customerList.add(customer1);
-//        customerList.add(customer2);
+        customerList.add(customer2);
 
         RentalService rentalService = new RentalService(cycleList, customerList);
 
+
+
         rentalService.rentCycle(1, 1);
-
-        String returnCycle = rentalService.returnCycle(1, 4);
-
         assertEquals("4 Rent: 10.0\n" +
                 "-------------------------------------------\n" +
-                "Total: 10.0", returnCycle);
+                "Total: 10.0", rentalService.returnCycle(1, 4));
+
+
+
+        rentalService.rentCycle(1, 2);
+        assertEquals("Base Rent for 4: 10.0Extra Rent for 1 extra days: 5.0\n" +
+                "-------------------------------------------\n" +
+                "Total: 15.0", rentalService.returnCycle(2, 5));
     }
 
     @After
