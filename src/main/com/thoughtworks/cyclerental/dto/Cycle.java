@@ -9,13 +9,6 @@ public class Cycle {
     public int noOfDays = 0;
     public boolean isRented = false;
 
-    public Cycle(int id, String brand, String name, Double pricePerDay) {
-        this.id = id;
-        this.brand = brand;
-        this.name = name;
-        this.pricePerDay = pricePerDay;
-    }
-
     public Cycle(int id, String brand, String name, Double basePrice, int noOfDays, Double pricePerDay) {
         this.id = id;
         this.brand = brand;
@@ -39,4 +32,24 @@ public class Cycle {
         return this.name.equals(name);
     }
 
+    public String invoice(int noOfDays) {
+        if (noOfDays <= this.noOfDays) {
+            return Invoice.baseInvoice(basePrice, noOfDays);
+        } else {
+            return renewalInvoice(this, noOfDays);
+        }
+    }
+
+    private static String renewalInvoice(Cycle cycle, int noOfDays) {
+        Invoice invoice = new Invoice();
+        invoice.descriptions.add(String.format("Base Rent for %d", cycle.noOfDays));
+        invoice.amounts.add(cycle.basePrice);
+        if(noOfDays > cycle.noOfDays) {
+            long extraDays = noOfDays - cycle.noOfDays;
+            double extraRent = extraDays * cycle.pricePerDay;
+            invoice.descriptions.add(String.format("Extra Rent for %d extra days", extraDays));
+            invoice.amounts.add(extraRent);
+        }
+        return invoice.toString();
+    }
 }

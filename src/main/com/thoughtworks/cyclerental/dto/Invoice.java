@@ -12,6 +12,13 @@ public class Invoice {
         this.descriptions = new ArrayList<String>();
     }
 
+    static String baseInvoice(Double basePrice, int noOfDays) {
+        Invoice invoice = new Invoice();
+        invoice.descriptions.add(String.format("%d Rent", noOfDays));
+        invoice.amounts.add(basePrice);
+        return invoice.toString();
+    }
+
     private Double sum() {
         Double totalAmount = 0.0;
         for (int i = 0; i < this.amounts.size(); i++) {
