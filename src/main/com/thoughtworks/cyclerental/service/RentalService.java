@@ -1,6 +1,7 @@
 package com.thoughtworks.cyclerental.service;
 
 import com.thoughtworks.cyclerental.dto.Customer;
+import com.thoughtworks.cyclerental.dto.Customers;
 import com.thoughtworks.cyclerental.dto.Cycle;
 import com.thoughtworks.cyclerental.dto.Cycles;
 import com.thoughtworks.cyclerental.dto.Invoice;
@@ -11,30 +12,26 @@ public class RentalService {
     Map<Integer, Invoice> invoices = new HashMap<>();
     Cycles cycles;
     HashMap<Customer, Cycle> rentals = new HashMap<>();
-    List<Customer> customers = new ArrayList<Customer>();
+    Customers customers;
 
-    public RentalService( Cycles cycles, List<Customer> customers) {
+    public RentalService( Cycles cycles, Customers customers) {
         this.cycles = cycles;
         this.customers = customers;
     }
 
     public void rentCycle(int cycleId, int customerId) {
         Cycle cycle = cycles.cycleFor(cycleId);
-        Customer customer = customerFor(customerId);
+        Customer customer = customers.customerFor(customerId);
         rentals.put(customer, cycle);
         cycle.isRented = true;
     }
 
     public String returnCycle(int customerId, int noOfDays) {
-        Customer customer = customerFor(customerId);
+        Customer customer = customers.customerFor(customerId);
         Cycle cycle = rentals.get(customer);
         rentals.remove(customer);
         cycle.isRented = false;
         return cycle.invoice(noOfDays);
-    }
-
-    private Customer customerFor(int customerId) {
-        return customers.stream().filter(customer1 -> customer1.id == customerId).findFirst().get();
     }
 
     // Do not remove this method, it will be used in future.
