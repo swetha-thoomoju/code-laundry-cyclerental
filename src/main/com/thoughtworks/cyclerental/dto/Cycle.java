@@ -31,25 +31,4 @@ public class Cycle {
     public boolean equals(String name) {
         return this.name.equals(name);
     }
-
-    public String invoice(int noOfDays) {
-        if (noOfDays <= this.noOfDays) {
-            return Invoice.baseInvoice(basePrice, noOfDays);
-        } else {
-            return renewalInvoice(this, noOfDays);
-        }
-    }
-
-    private static String renewalInvoice(Cycle cycle, int noOfDays) {
-        Invoice invoice = new Invoice();
-        invoice.descriptions.add(String.format("Base Rent for %d", cycle.noOfDays));
-        invoice.amounts.add(cycle.basePrice);
-        if(noOfDays > cycle.noOfDays) {
-            long extraDays = noOfDays - cycle.noOfDays;
-            double extraRent = extraDays * cycle.pricePerDay;
-            invoice.descriptions.add(String.format("Extra Rent for %d extra days", extraDays));
-            invoice.amounts.add(extraRent);
-        }
-        return invoice.toString();
-    }
 }

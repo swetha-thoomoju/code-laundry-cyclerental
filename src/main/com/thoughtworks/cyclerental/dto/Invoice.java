@@ -12,11 +12,28 @@ public class Invoice {
         this.descriptions = new ArrayList<String>();
     }
 
-    static String baseInvoice(Double basePrice, int noOfDays) {
-        Invoice invoice = new Invoice();
-        invoice.descriptions.add(String.format("%d Rent", noOfDays));
-        invoice.amounts.add(basePrice);
-        return invoice.toString();
+    public String invoiceFor(Cycle cycle, int rentedDays) {
+        if (rentedDays <= cycle.noOfDays) {
+            return baseInvoice(cycle.basePrice, rentedDays);
+        } else {
+            return renewalInvoice(cycle, rentedDays);
+        }
+    }
+
+    private String baseInvoice(Double basePrice, int noOfDays) {
+        descriptions.add(String.format("%d Rent", noOfDays));
+        amounts.add(basePrice);
+        return toString();
+    }
+
+    private String renewalInvoice(Cycle cycle, int rentedDays) {
+        descriptions.add(String.format("Base Rent for %d", cycle.noOfDays));
+        amounts.add(cycle.basePrice);
+        long extraDays = rentedDays - cycle.noOfDays;
+        double extraRent = extraDays * cycle.pricePerDay;
+        descriptions.add(String.format("Extra Rent for %d extra days", extraDays));
+        amounts.add(extraRent);
+        return toString();
     }
 
     private Double sum() {

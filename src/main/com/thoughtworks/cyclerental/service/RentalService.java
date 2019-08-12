@@ -26,12 +26,12 @@ public class RentalService {
         cycle.isRented = true;
     }
 
-    public String returnCycle(int customerId, int noOfDays) {
+    public String returnCycle(int customerId, int rentedDays) {
         Customer customer = customers.customerFor(customerId);
         Cycle cycle = rentals.get(customer);
         rentals.remove(customer);
         cycle.isRented = false;
-        return cycle.invoice(noOfDays);
+        return new Invoice().invoiceFor(cycle, rentedDays);
     }
 
     // Do not remove this method, it will be used in future.
